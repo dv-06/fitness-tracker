@@ -83,7 +83,7 @@ fitness-tracker/
 │
 ├── signup.py           # Main application (signup, signin, menu)
 ├── calculation.py      # BMR, TDEE, protein calculations
-├── workout.py          # Workout logging system
+├── workout_logger.py          # Workout logging system
 │
 ├── File.xlsx          # User profiles (auto-generated)
 ├── user_plans.xlsx    # Fitness plans (auto-generated)
