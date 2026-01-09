@@ -2,6 +2,7 @@ import pandas as pd
 import os
 from calculation import record_calculation
 from workout import show_workout_menu
+from streak import show_streak_menu
 
 users = "File.xlsx"
 
@@ -529,27 +530,34 @@ def main_menu(email):
         print("="*50)
         print("1. View my fitness plan")
         print("2. Log a workout")
-        print("3. View recent workouts")
-        print("4. Reset password")
-        print("5. Exit")
+        print("3. Mark rest day")
+        print("4. View recent workouts")
+        print("5. View fitness streak")
+        print("6. Reset password")
+        print("7. Exit")
         print("="*50)
         
-        choice = input("Enter your choice (1-5): ").strip()
+        choice = input("Enter your choice (1-7): ").strip()
         
         if choice == "1":
             view_plan(email)
         elif choice == "2":
             show_workout_menu(email)
         elif choice == "3":
+            from streak import mark_rest_day
+            mark_rest_day(email)
+        elif choice == "4":
             from workout import show_recent_workouts
             show_recent_workouts(email)
-        elif choice == "4":
-            reset_password(email)
         elif choice == "5":
+            show_streak_menu(email)
+        elif choice == "6":
+            reset_password(email)
+        elif choice == "7":
             print("\n✓ Thank you for using Fitness Tracker! Goodbye!")
             break
         else:
-            print("\nInvalid choice. Please enter 1-5.")
+            print("\nInvalid choice. Please enter 1-7.")
 
 # ------------------ MAIN PROGRAM ------------------
 
