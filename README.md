@@ -62,7 +62,7 @@ pip install pandas openpyxl
 
 1. **First Time Users:**
 ```bash
-   python signup.py
+   python registration.py
 ```
    - Answer "no" when asked if you have an account
    - Complete signup form
@@ -72,7 +72,7 @@ pip install pandas openpyxl
 
 2. **Returning Users:**
 ```bash
-   python signup.py
+   python registation.py
 ```
    - Answer "yes" when asked if you have an account
    - Sign in with email and password
@@ -92,9 +92,9 @@ pip install pandas openpyxl
 fitness-tracker/
 │
 ├── registration.py           # Main application (signup, signin, menu)
-├── calculate.py      # BMR, TDEE, protein calculations
+├── calculation.py      # BMR, TDEE, protein calculations
 ├── workout_logger.py          # Workout logging system
-├── streak.py           # Fitness streak tracker
+├── streaks.py           # Fitness streak tracker
 │
 ├── File.xlsx          # User profiles (auto-generated)
 ├── user_plans.xlsx    # Fitness plans (auto-generated)
