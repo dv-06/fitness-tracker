@@ -3,6 +3,7 @@
 File.xlsx
 user_plans.xlsx
 workouts.xlsx
+streaks.xlsx
 
 # Python cache
 __pycache__/
