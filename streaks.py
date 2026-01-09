@@ -72,7 +72,14 @@ def get_user_workouts(email):
     if not os.path.exists(WORKOUT_FILE):
         return []
     
-    df = pd.read_excel(WORKOUT_FILE)
+    try:
+        df = pd.read_excel(WORKOUT_FILE)
+    except Exception:
+        return []
+    
+    if df.empty:
+        return []
+    
     user_workouts = df[df["Email"].str.strip().str.lower() == email.strip().lower()]
     
     if user_workouts.empty:
