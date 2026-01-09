@@ -45,6 +45,14 @@ Each plan includes:
 - View workout history
 - Automatic unit conversion (weights displayed in your preferred units)
 
+### Fitness Streak Tracking
+- **Weekly goal-based streaks** - Set your weekly workout target
+- Track consecutive weeks meeting your goal
+- View current and longest streaks
+- Monitor weekly and monthly consistency
+- Mark rest days for recovery tracking
+- Motivational progress displays with emojis
+
 ##  Requirements
 ```bash
 pip install pandas openpyxl
@@ -73,7 +81,9 @@ pip install pandas openpyxl
 3. **Main Menu Options:**
    - View your fitness plan
    - Log a workout
+   - Mark rest day
    - View recent workouts
+   - View fitness streak (with submenu)
    - Reset password
    - Exit
 
@@ -81,13 +91,15 @@ pip install pandas openpyxl
 ```
 fitness-tracker/
 │
-├── signup.py           # Main application (signup, signin, menu)
-├── calculation.py      # BMR, TDEE, protein calculations
+├── registration.py           # Main application (signup, signin, menu)
+├── calculate.py      # BMR, TDEE, protein calculations
 ├── workout_logger.py          # Workout logging system
+├── streak.py           # Fitness streak tracker
 │
 ├── File.xlsx          # User profiles (auto-generated)
 ├── user_plans.xlsx    # Fitness plans (auto-generated)
-└── workouts.xlsx      # Workout logs (auto-generated)
+├── workouts.xlsx      # Workout logs (auto-generated)
+└── streaks.xlsx       # Streak data (auto-generated)
 ```
 
 ## 🔒 Data Storage
