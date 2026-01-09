@@ -1,8 +1,8 @@
 import pandas as pd
 import os
-from calculation import record_calculation
-from workout import show_workout_menu
-from streak import show_streak_menu
+from calculate import record_calculation
+from workout_logger import show_workout_menu
+from streaks import show_streak_menu
 
 users = "File.xlsx"
 
@@ -544,10 +544,10 @@ def main_menu(email):
         elif choice == "2":
             show_workout_menu(email)
         elif choice == "3":
-            from streak import mark_rest_day
+            from streaks import mark_rest_day
             mark_rest_day(email)
         elif choice == "4":
-            from workout import show_recent_workouts
+            from workout_logger import show_recent_workouts
             show_recent_workouts(email)
         elif choice == "5":
             show_streak_menu(email)
