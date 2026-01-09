@@ -11,37 +11,13 @@ def init_workout_file():
             "Email",
             "Date",
             "Muscle",
-            "Exercise",
             "Sets",
             "Reps",
-            "Weight_kg",
             "Duration_Min"
         ])
         df.to_excel(WORKOUT_FILE, index=False)
 
-def get_user_unit(email):
-    """Get user's preferred unit from File.xlsx"""
-    users_file = "File.xlsx"
-    if os.path.exists(users_file):
-        df = pd.read_excel(users_file)
-        user = df[df["Email"].str.strip().str.lower() == email.strip().lower()]
-        if not user.empty:
-            return user.iloc[0]["Unit Select"]
-    return "Metric"
-
-def kg_to_lbs(kg):
-    """Convert kg to lbs"""
-    if kg is None or pd.isna(kg):
-        return None
-    return kg * 2.20462
-
-def lbs_to_kg(lbs):
-    """Convert lbs to kg"""
-    if lbs is None or pd.isna(lbs):
-        return None
-    return lbs * 0.453592
-
-def log_workout(email, muscle, exercise, sets=None, reps=None, weight_kg=None, duration=None):
+def log_workout(email, muscle, sets=None, reps=None, duration=None):
     """Log a workout to workouts.xlsx"""
     init_workout_file()
 
@@ -49,10 +25,8 @@ def log_workout(email, muscle, exercise, sets=None, reps=None, weight_kg=None, d
         "Email": email.lower(),
         "Date": datetime.now().date().isoformat(),
         "Muscle": muscle,
-        "Exercise": exercise,
         "Sets": int(sets) if sets is not None else None,
         "Reps": int(reps) if reps is not None else None,
-        "Weight_kg": weight_kg,
         "Duration_Min": duration
     }
 
@@ -74,8 +48,6 @@ def show_recent_workouts(email, limit=5):
     if user_df.empty:
         print("\nNo workouts found for your account.")
         return
-
-    user_unit = get_user_unit(email)
     
     print("\n" + "="*60)
     print(f"YOUR LAST {min(limit, len(user_df))} WORKOUTS")
@@ -84,17 +56,9 @@ def show_recent_workouts(email, limit=5):
     for _, r in user_df.sort_values("Date", ascending=False).head(limit).iterrows():
         print(f"\nDate: {r['Date']}")
         print(f"Muscle Group: {r['Muscle']}")
-        print(f"Exercise: {r['Exercise']}")
         
         if pd.notna(r['Sets']) and pd.notna(r['Reps']):
             print(f"Sets x Reps: {int(r['Sets'])}x{int(r['Reps'])}")
-        
-        if pd.notna(r['Weight_kg']):
-            if user_unit.lower() == "us units":
-                weight_display = kg_to_lbs(r['Weight_kg'])
-                print(f"Weight: {weight_display:.1f} lbs")
-            else:
-                print(f"Weight: {r['Weight_kg']:.1f} kg")
         
         if pd.notna(r['Duration_Min']):
             print(f"Duration: {int(r['Duration_Min'])} minutes")
@@ -136,16 +100,6 @@ def show_workout_menu(email):
             break
         print("Invalid choice. Please enter 1-8.")
     
-    # Exercise name
-    exercise = input(f"\nEnter exercise name: ").strip()
-    
-    if not exercise:
-        print("Exercise name cannot be empty. Workout not logged.")
-        return
-    
-    # Get user's preferred unit
-    user_unit = get_user_unit(email)
-    
     # If cardio, only ask for duration
     if muscle == "Cardio":
         while True:
@@ -155,10 +109,10 @@ def show_workout_menu(email):
                 break
             print("Please enter a positive number.")
         
-        log_workout(email, muscle, exercise, sets=None, reps=None, weight_kg=None, duration=duration)
+        log_workout(email, muscle, sets=None, reps=None, duration=duration)
     
     else:
-        # For non-cardio: ask sets, reps, weight
+        # For non-cardio: ask sets and reps only
         while True:
             sets_input = input("\nEnter number of sets: ").strip()
             if sets_input.isdigit() and int(sets_input) > 0:
@@ -173,25 +127,4 @@ def show_workout_menu(email):
                 break
             print("Please enter a positive number.")
         
-        # Ask for weight in user's preferred unit
-        if user_unit.lower() == "us units":
-            weight_prompt = "Enter weight in lbs (or press Enter to skip): "
-        else:
-            weight_prompt = "Enter weight in kg (or press Enter to skip): "
-        
-        while True:
-            weight_input = input(weight_prompt).strip()
-            
-            if weight_input == "":
-                weight_kg = None
-                break
-            
-            if weight_input.replace('.','').isdigit() and float(weight_input) > 0:
-                if user_unit.lower() == "us units":
-                    weight_kg = lbs_to_kg(float(weight_input))
-                else:
-                    weight_kg = float(weight_input)
-                break
-            print("Please enter a positive number or press Enter to skip.")
-        
-        log_workout(email, muscle, exercise, sets=sets, reps=reps, weight_kg=weight_kg, duration=None)
+        log_workout(email, muscle, sets=sets, reps=reps, duration=None)
