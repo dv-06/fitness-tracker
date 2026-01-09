@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import calendar
 
 class FitnessStreak:
     def __init__(self):
@@ -16,7 +17,7 @@ class FitnessStreak:
 
             if diff == 1:
                 self.current_streak += 1
-            elif diff > 1:
+            else:
                 self.current_streak = 1
         else:
             self.current_streak = 1
@@ -31,12 +32,12 @@ class FitnessStreak:
         today = datetime.today()
         return len([
             d for d in self.workout_dates
-            if (today - d).days <= 7
+            if d.isocalendar()[1] == today.isocalendar()[1] and d.year == today.year
         ])
 
     def monthly_consistency(self):
         today = datetime.today()
-        days_in_month = (today.replace(month=today.month % 12 + 1, day=1) - timedelta(days=1)).day
+        days_in_month = calendar.monthrange(today.year, today.month)[1]
 
         workouts = len([
             d for d in self.workout_dates
@@ -57,10 +58,28 @@ class FitnessStreak:
 
 if __name__ == "__main__":
     tracker = FitnessStreak()
-    tracker.add_workout("2026-01-01")
-    tracker.add_workout("2026-01-02")
-    tracker.add_workout("2026-01-03")
-    tracker.add_rest_day()
-    tracker.add_workout("2026-01-05")
+
+    while True:
+        action = input("\nEnter 'w' to add workout, 'r' for rest day, 'm' to show metrics, 'q' to quit: ").lower()
+
+        if action == 'w':
+            date_str = input("Enter workout date (YYYY-MM-DD): ")
+            try:
+                tracker.add_workout(date_str)
+                print("Workout added!")
+            except ValueError:
+                print("Invalid date format. Please use YYYY-MM-DD.")
+        elif action == 'r':
+            tracker.add_rest_day()
+            print("Rest day added!")
+        elif action == 'm':
+            print("\n--- Fitness Metrics ---")
+            for k, v in tracker.get_metrics().items():
+                print(f"{k}: {v}")
+        elif action == 'q':
+            print("Exiting tracker. Stay consistent 💪")
+            break
+        else:
+            print("Invalid choice. Try again.")
 
     print(tracker.get_metrics())
